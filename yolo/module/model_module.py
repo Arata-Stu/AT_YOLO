@@ -75,8 +75,8 @@ class ModelModule(pl.LightningModule):
 
         if self.full_config.dataset.name == "coco":
             from .data.dataset.coco.coco_classes import COCO_CLASSES as CLASSES
-        # elif self.full_config.dataset.name == "dsec":
-        #     from yolo_ev.module.data.dataset.dsec_det.dsec_det_classes import CLASSES
+        elif self.full_config.dataset.name == "dsec":
+            from .data.dataset.dsec.label import CLASSES
             
         classes = CLASSES
         categories = [{"id": idx + 1, "name": name} for idx, name in enumerate(classes)]
