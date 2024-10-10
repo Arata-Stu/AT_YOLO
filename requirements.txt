@@ -5,6 +5,7 @@ pytorch_lightning
 tensorboard
 pycocotools
 
+pyyaml
 h5py
 hdf5plugin
 opencv-python
