@@ -29,6 +29,12 @@ class ModelModule(pl.LightningModule):
         self.model.apply(init_yolo)
         self.model.head.initialize_biases(1e-2)
 
+        #重みファイルをロード
+        if self.full_config.model.weight_file_path is not "":
+            ckpt = torch.load(self.full_config.model.weight_file_path)
+            self.model.load_state_dict(ckpt['model'])
+
+
         #凍結設定
         if self.full_config.model.backbone.is_cold:
             for param in self.model.backbone.parameters():
