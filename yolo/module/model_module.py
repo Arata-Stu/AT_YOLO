@@ -29,6 +29,15 @@ class ModelModule(pl.LightningModule):
         self.model.apply(init_yolo)
         self.model.head.initialize_biases(1e-2)
 
+        #凍結設定
+        if self.full_config.model.backbone.is_cold:
+            for param in self.model.backbone.parameters():
+                param.requires_grad = False
+            
+        elif self.full_config.model.head.is_cold:
+            for param in self.model.head.parameters():
+                param.requires_grad = False
+
 
     def forward(self, x, targets=None):
         return self.model(x, targets)

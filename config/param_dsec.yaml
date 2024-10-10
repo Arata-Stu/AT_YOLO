@@ -29,6 +29,7 @@ model:
     in_channels: [256, 512, 1024]
     depthwise: false
     act: "silu"
+    is_cold: True
     
   head:
     num_classes: 8
@@ -37,6 +38,7 @@ model:
     in_channels: [256, 512, 1024]
     act: "silu"
     depthwise: false
+    is_cold: False
 
   postprocess:
     conf_thre: 0.1
