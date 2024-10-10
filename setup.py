@@ -6,7 +6,7 @@ def parse_requirements(filename):
 
 setup(
     name='yolo',
-    packages=['yolo'],
+    packages=['AT_YOLO'],
     package_dir={'': 'yolo'},
     install_requires=parse_requirements('requirements.txt')
 )
