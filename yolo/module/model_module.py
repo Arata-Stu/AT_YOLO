@@ -29,10 +29,14 @@ class ModelModule(pl.LightningModule):
         self.model.apply(init_yolo)
         self.model.head.initialize_biases(1e-2)
 
-        #重みファイルをロード
-        if self.full_config.model.weight_file_path is not "":
+        # 重みファイルをロード（バックボーンのみ）
+        if self.full_config.model.weight_file_path:
             ckpt = torch.load(self.full_config.model.weight_file_path)
-            self.model.load_state_dict(ckpt['model'])
+            # バックボーンのみをロードするために、headの部分を無視
+            state_dict = ckpt['model']
+            backbone_state_dict = {k: v for k, v in state_dict.items() if 'head' not in k}
+            self.model.load_state_dict(backbone_state_dict, strict=False)  # strict=Falseでヘッドを無視
+
 
 
         #凍結設定
