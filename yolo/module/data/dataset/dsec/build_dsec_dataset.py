@@ -4,7 +4,7 @@ from .dataset import DsecDetDataset
 from .transform import TrainTransform, ValTransform
 
 
-def build_dsec_det_dataset(full_config: DictConfig, mode="train"):
+def build_dsec_dataset(full_config: DictConfig, mode="train"):
 
     config_path = full_config.dataset.split_config
     with open(config_path, 'r') as f:
