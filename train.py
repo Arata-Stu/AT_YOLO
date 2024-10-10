@@ -27,8 +27,8 @@ def main():
         ),  
     ]
     trainer = pl.Trainer(
-        max_epochs=config.training.max_epoch,
-        max_steps= config.training.max_step,
+        max_epochs=config.training.max_epochs,
+        max_steps= config.training.max_steps,
         logger=[pl_loggers.TensorBoardLogger(save_dir=save_dir)],
         callbacks=callbacks,
         accelerator='gpu',
