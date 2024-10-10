@@ -1,0 +1,61 @@
+dataset:
+  name: "coco"
+  data_dir: "./../datasets/coco/"
+  img_size: [640, 640]
+  train:
+    json_file: "instances_train2017.json"
+    batch_size: 16
+    num_workers: 4
+
+  val:
+    json_file: "instances_val2017.json"
+    batch_size: 16
+    num_workers: 4
+
+  test:
+    json_file: ~
+    batch_size: 16
+    num_workers: 4
+
+
+model:
+  backbone:
+    depth: 0.33
+    width: 0.5
+    in_features: ["dark3", "dark4", "dark5"]
+    in_channels: [256, 512, 1024]
+    depthwise: false
+    act: "silu"
+    
+  head:
+    num_classes: 80
+    width: 0.5
+    strides: [8, 16, 32]
+    in_channels: [256, 512, 1024]
+    act: "silu"
+    depthwise: false
+
+  postprocess:
+    conf_thre: 0.1
+    nms_thre: 0.45
+
+training:
+  precision: 16
+  max_epochs: 10000
+  max_steps: 400000
+  learning_rate: 0.0002
+  weight_decay: 0
+  gradient_clip_val: 1.0
+  limit_train_batches: 1.0
+  lr_scheduler:
+    use: True
+    total_steps: ${..max_steps}
+    pct_start: 0.005
+    div_factor: 25 # init_lr = max_lr / div_factor
+    final_div_factor: 10000 # final_lr = max_lr / final_div_factor (this is different from Pytorch' OneCycleLR param)
+
+
+val:
+
+test:
+

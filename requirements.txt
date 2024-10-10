@@ -1,0 +1,10 @@
+torch
+omegaconf
+pytorch_lightning
+
+tensorboard
+pycocotools
+
+h5py
+hdf5plugin
+opencv-python
