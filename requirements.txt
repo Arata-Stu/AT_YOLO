@@ -1,10 +1,13 @@
 torch
 omegaconf
 pytorch_lightning
+numba
+torchvision
 
 tensorboard
 pycocotools
 
+loguru
 pyyaml
 h5py
 hdf5plugin
