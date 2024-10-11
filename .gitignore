@@ -1,4 +1,5 @@
-YOLO_ENV
+YOLO_ENV/
+yolo_env/
 weight/
 result/
 datasets/
