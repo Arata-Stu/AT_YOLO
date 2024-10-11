@@ -3,8 +3,8 @@ dataset:
   data_dir: "./datasets/DSEC/"
   split_config: "./yolo/module/data/dataset/dsec/train_val_test_split.yaml"
   img_size: [640, 640]
-  use_imgs: True
-  use_events: True
+  use_imgs: true
+  use_events: true
   train:
     
     batch_size: 16
@@ -22,7 +22,7 @@ dataset:
 
 
 model:
-  weight_file_path: "./weight/yolox_m.pth"
+  weight_file_path: ""
   backbone:
     depth: 0.33
     width: 0.5
@@ -30,7 +30,7 @@ model:
     in_channels: [256, 512, 1024]
     depthwise: false
     act: "silu"
-    is_cold: True
+    is_cold: false
     
   head:
     num_classes: 8
@@ -39,7 +39,7 @@ model:
     in_channels: [256, 512, 1024]
     act: "silu"
     depthwise: false
-    is_cold: False
+    is_cold: false
 
   postprocess:
     conf_thre: 0.1
