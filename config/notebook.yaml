@@ -1,9 +1,9 @@
 dataset:
   name: "dsec"
   data_dir: "./../datasets/DSEC/"
-  split_config: "./yolo/module/data/dataset/dsec/train_val_test_split.yaml"
+  split_config: "./../yolo/module/data/dataset/dsec/test.yaml"
   img_size: [640, 640]
-  use_imgs: true
+  use_imgs: false
   use_events: true
   train:
     
