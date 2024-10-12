@@ -6,48 +6,57 @@ from yolo.module.data_module import DataModule
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning import loggers as pl_loggers
+import os
+import datetime
 
 def main():
-    save_dir = './result'
+    base_save_dir = './result'
+    
+    # 実行時のタイムスタンプを付与して、一意のディレクトリ名を生成
+    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    save_dir = os.path.join(base_save_dir, timestamp)
 
+    # configファイルを読み込み
     yaml_file = "./config/param.yaml"
     with open(yaml_file, 'r') as file:
         config = yaml.safe_load(file)
     config = OmegaConf.create(config)
 
+    # データモジュールとモデルモジュールのインスタンスを作成
     data = DataModule(config)
     model = ModelModule(config)
 
+    # コールバックにModelCheckpointを設定
     callbacks = [
         ModelCheckpoint(
-            dirpath=save_dir,
+            dirpath=save_dir,  # save_dirにチェックポイントを保存
             filename='{epoch:02d}-{AP:.2f}',
-            monitor='epoch_train_loss',                                 # 基準とする量
-            mode="min",                                         
+            monitor='epoch_train_loss',  # 基準とする量
+            mode="min", 
+            save_top_k=3,  # 保存するトップkのチェックポイント
         ),  
     ]
+
+    # TensorBoard Loggerもsave_dirに対応させる
+    logger = pl_loggers.TensorBoardLogger(
+        save_dir=base_save_dir,  # ベースディレクトリ（ここでlightning_logsが作成される）
+        name='',  # デフォルトの`lightning_logs`ディレクトリに保存
+        version=timestamp  # タイムスタンプをバージョン名に使用
+    )
+
+    # トレーナーを設定
     trainer = pl.Trainer(
         max_epochs=config.training.max_epochs,
-        max_steps= config.training.max_steps,
-        logger=[pl_loggers.TensorBoardLogger(save_dir=save_dir)],
+        max_steps=config.training.max_steps,
+        logger=logger,  # Loggerに対応させる
         callbacks=callbacks,
         accelerator='gpu',
-        devices=[0],                            # 使用するGPUのIDのリスト
-        # auto_lr_find=True,                      # learning rateを自動で設定するか
-        # accumulate_grad_batches=1,              # 勾配を累積して一度に更新することでバッチサイズを仮想的にN倍にする際のN
-        # gradient_clip_val=1,                    # 勾配クリッピングの値
-        # fast_dev_run=True,                      # デバッグ時にonにすると、1回だけtrain,validを実行する
-        # overfit_batches=1.0,                    # デバッグ時にonにすると、train = validで学習が進み、過学習できているかを確認できる
-        # deterministic=True,                     # 再現性のために乱数シードを固定するか
-        # resume_from_checkpoint='bbb/aaa.ckpt',  # チェックポイントから再開する場合に利用
-        # precision=16,                           # 小数を何ビットで表現するか
-        # amp_backend="apex",                     # 少数の混合方式を使用するかどうか。nvidiaのapexがインストールされている必要あり。
-        benchmark=True,                         # cudnn.benchmarkを使用して高速化するか（determisticがTrueの場合はFalseに上書きされる）
+        devices=[0],  # 使用するGPUのIDのリスト
+        benchmark=True,  # cudnn.benchmarkを使用して高速化
     )
-    # trainer.tune(model, datamodule=data_module)   # 「auto_lr_find=True」を指定した場合に実行する
-    
+
+    # モデルの学習を実行
     trainer.fit(model, datamodule=data)
-    # trainer.test(model, datamodule=data)
 
 if __name__ == '__main__':
     main()
