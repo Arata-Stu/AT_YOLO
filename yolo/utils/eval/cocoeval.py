@@ -452,7 +452,7 @@ class COCOeval:
                     s = s[t]
                 s = s[:,:,aind,mind]
             if len(s[s>-1])==0:
-                mean_s = -1
+                mean_s = 0
             else:
                 mean_s = np.mean(s[s>-1])
             print(iStr.format(titleStr, typeStr, iouStr, areaRng, maxDets, mean_s))
