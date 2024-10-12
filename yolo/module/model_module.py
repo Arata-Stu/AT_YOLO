@@ -173,12 +173,12 @@ class ModelModule(pl.LightningModule):
     def on_test_epoch_end(self):
         # スコアの集計処理
         avg_scores = {
-            'AP': torch.tensor([x['AP'] for x in self.validation_scores]).mean(),
-            'AP_50': torch.tensor([x['AP_50'] for x in self.validation_scores]).mean(),
-            'AP_75': torch.tensor([x['AP_75'] for x in self.validation_scores]).mean(),
-            'AP_S': torch.tensor([x['AP_S'] for x in self.validation_scores]).mean(),
-            'AP_M': torch.tensor([x['AP_M'] for x in self.validation_scores]).mean(),
-            'AP_L': torch.tensor([x['AP_L'] for x in self.validation_scores]).mean(),
+            'AP': torch.tensor([x['AP'] for x in self.test_scores]).mean(),
+            'AP_50': torch.tensor([x['AP_50'] for x in self.test_scores]).mean(),
+            'AP_75': torch.tensor([x['AP_75'] for x in self.test_scores]).mean(),
+            'AP_S': torch.tensor([x['AP_S'] for x in self.test_scores]).mean(),
+            'AP_M': torch.tensor([x['AP_M'] for x in self.test_scores]).mean(),
+            'AP_L': torch.tensor([x['AP_L'] for x in self.test_scores]).mean(),
         }
 
         # 各スコアをログに記録する
