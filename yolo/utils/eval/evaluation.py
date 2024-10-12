@@ -3,7 +3,7 @@ import os
 import contextlib
 from pycocotools.coco import COCO
 # from pycocotools.cocoeval import COCOeval
-from cocoeval import COCOeval
+from .cocoeval import COCOeval
 
 def evaluation(Gt, Dt, num_data):
 
