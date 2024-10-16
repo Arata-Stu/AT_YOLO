@@ -3,6 +3,7 @@ from omegaconf import OmegaConf
 from yolo.module.model_module import ModelModule
 from yolo.module.data_module import DataModule
 
+import torch
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning import loggers as pl_loggers
@@ -25,6 +26,10 @@ def main():
     # データモジュールとモデルモジュールのインスタンスを作成
     data = DataModule(config)
     model = ModelModule(config)
+
+    if config.model.ckpt_path != "":
+        ckpt = torch.load(config.model.ckpt_path)
+        model.load_state_dict(ckpt['state_dict'])
 
     
     # TensorBoard Loggerもsave_dirに対応させる

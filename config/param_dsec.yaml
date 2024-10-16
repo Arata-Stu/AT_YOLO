@@ -3,7 +3,7 @@ dataset:
   data_dir: "./datasets/DSEC/"
   split_config: "./yolo/module/data/dataset/dsec/train_val_test_split.yaml"
   img_size: [640, 640]
-  use_imgs: true
+  use_imgs: false
   use_events: true
   train:
     
@@ -23,9 +23,10 @@ dataset:
 
 model:
   weight_file_path: ""
+  ckpt_path: ""
   backbone:
-    depth: 0.33
-    width: 0.5
+    depth: 0.67
+    width: 0.75
     in_features: ["dark3", "dark4", "dark5"]
     in_channels: [256, 512, 1024]
     depthwise: false
@@ -34,7 +35,7 @@ model:
     
   head:
     num_classes: 8
-    width: 0.5
+    width: 0.75
     strides: [8, 16, 32]
     in_channels: [256, 512, 1024]
     act: "silu"
