@@ -11,14 +11,14 @@ import os
 import datetime
 
 def main():
-    base_save_dir = './result'
+    base_save_dir = './result/test'
     
     # 実行時のタイムスタンプを付与して、一意のディレクトリ名を生成
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     save_dir = os.path.join(base_save_dir, timestamp)
 
     # configファイルを読み込み
-    yaml_file = "./config/param.yaml"
+    yaml_file = "./config/param_dsec.yaml"
     with open(yaml_file, 'r') as file:
         config = yaml.safe_load(file)
     config = OmegaConf.create(config)
@@ -50,6 +50,7 @@ def main():
         benchmark=True,  # cudnn.benchmarkを使用して高速化
     )
 
+    data.setup('fit')
     # モデルの学習を実行
     trainer.test(model, datamodule=data)
 
